@@ -39,6 +39,10 @@
 {% for post in posts %}
   <li class="card" data-category="{{ post.category }}" data-tags="{{ post.tags | map('slugify') | join(' ') }}">
     <a class="card-link" href="{{ root }}{{ post.url }}">
+      <div class="titlebar">
+        <span class="titlebar-text">~/{{ post.rel | join("/") }}</span>
+        <span class="titlebar-buttons" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
       <div class="card-cover" style="--hue: {{ post.hue }}">
 {% if post.cover_url %}
         <img src="{{ root }}{{ post.cover_url }}" alt="" loading="lazy">
@@ -47,7 +51,6 @@
 {% endif %}
       </div>
       <div class="card-body">
-        <p class="card-category">{{ post.breadcrumb | join(" / ") }}</p>
         <h2 class="card-title">{{ post.title }}</h2>
 {% if post.summary %}
         <p class="card-summary">{{ post.summary }}</p>
