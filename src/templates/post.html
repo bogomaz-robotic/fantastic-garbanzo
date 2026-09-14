@@ -4,6 +4,10 @@
 
 {% block content %}
 <article class="post">
+  <div class="titlebar" aria-hidden="true">
+    <span class="titlebar-text">{{ page.title if page else post.title }} - Notepad</span>
+    <span class="titlebar-buttons"><i></i><i></i><i></i></span>
+  </div>
   <header class="post-header">
     <p class="breadcrumb">
       <a href="{{ root }}?category={{ post.category }}">{{ post.breadcrumb | join(" / ") }}</a>
