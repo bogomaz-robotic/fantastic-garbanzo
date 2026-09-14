@@ -1,0 +1,38 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What this is
+
+A personal tech blog ("bogomaz-robotic.tech"). A single Python script, `build.py`, turns Markdown/Jupyter sources under `src/posts/` into static HTML in `dist/`, which is deployed to GitHub Pages (https://bogomaz-robotic.github.io/fantastic-garbanzo/). There is no static site generator, no test suite, and no linter configured. `README.md` is the author-facing guide to writing posts (frontmatter fields, extra pages, notebooks, mermaid) — keep it in sync when changing build behavior.
+
+## Commands
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python build.py                      # wipes and regenerates dist/
+cd dist && python -m http.server 8000
+```
+
+`build.py` validates all posts before touching `dist/`; on a validation error it prints `build failed: <path>: <reason>` and exits 1 with the previous `dist/` left intact. Running the build is the only way to check a change.
+
+Deployment: pushing to `main` is meant to run `.github/workflows/deploy.yml` (install requirements, `python build.py`, publish `dist/` to Pages). Note: `.github/workflows/` is currently empty, so that workflow does not exist yet.
+
+## Architecture
+
+**Content model is the directory tree.** A post is any directory containing `index.md`, and it must sit at exactly `posts/<category>/<slug>/` or `posts/<category>/<sub-category>/<slug>/` (depth 2 or 3; nesting a post inside another post is an error). Category/sub-category are derived from the path, never from frontmatter. Output URL mirrors the source path: `dist/posts/<rel>/index.html`.
+
+**Build pipeline (`build.py`):**
+1. `discover_post_dirs` → `load_post` per directory: parses/validates frontmatter (`title`, `date` required; `tags` list; `cover` must resolve inside the post's `assets/`), renders Markdown.
+2. Every other `.md` or `.ipynb` file in the post directory becomes an `ExtraPage` at `<post-url>/<stem>/`, sorted by optional integer `order` then filename. `index` and `assets` are reserved stems. Notebooks are rendered from saved outputs only (never executed) by `render_notebook`.
+3. `render_markdown` pre-extracts ```` ```mermaid ```` fences into `<pre class="mermaid">` *before* python-markdown runs (so codehilite doesn't touch them) and returns a `has_mermaid` flag; that flag flows into the template context so only pages with diagrams load the Mermaid CDN script (in `base.html`).
+4. `rewrite_relative_urls` post-processes rendered HTML `href`/`src` attributes: `foo.md`/`foo.ipynb` links become clean `foo/` URLs, and extra pages get `../` prepended because they live one directory deeper than the post. Authors therefore always write links relative to the post source directory.
+5. `Site.emit` renders Jinja templates with `StrictUndefined` (any missing context variable is a build error) and computes `root` (a `../` chain) so all site links are relative — the site works under the `/fantastic-garbanzo/` Pages subpath and from a local server alike. Templates must use `{{ root }}` for site-relative links, never absolute `/` paths.
+6. `src/static/` is copied wholesale to `dist/static/`; each post's `assets/` is copied next to its HTML.
+
+**Homepage filtering** is client-side. `homepage_context` builds category/tag chip data (tags are grouped by `slugify`, label from the first spelling seen); `index.html` renders every card with `data-category`/`data-tags`, and `src/static/filter.js` shows/hides cards and syncs `?category=&tag=` in the URL. Filters and the full-width toggle (`layout.js`, persisted in `localStorage`) are rendered `hidden` and revealed by JS, so the page degrades to a plain list without JS.
+
+**Styling:** `src/static/style.css` is the only stylesheet. Card placeholders use a `--hue` derived from a CRC32 of the category (`Post.hue`). Raw HTML in posts passes through unchanged; inline SVG figures use the `dg-*` classes defined in `style.css`.
+
+Frontend JS is plain ES5-style IIFEs with no build step or dependencies.

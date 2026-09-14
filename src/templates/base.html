@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site_name }}{% endblock %}</title>
+{% if description %}
+  <meta name="description" content="{{ description }}">
+{% endif %}
+  <link rel="stylesheet" href="{{ root }}static/style.css">
+  <script>
+    try { if (localStorage.getItem("layout") === "wide") document.documentElement.classList.add("wide"); } catch (e) {}
+  </script>
+  <script src="{{ root }}static/layout.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap wrap-wide">
+      <a class="logo" href="{{ root }}">bogomaz-robotic<span>.</span>tech</a>
+      <button class="width-toggle" type="button" aria-pressed="false" aria-label="Full width" title="Full width" hidden>
+        <svg class="icon-wide" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M3 5v14M21 5v14M7 12h10M10 9l-3 3 3 3M14 9l3 3-3 3" />
+        </svg>
+        <svg class="icon-narrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M12 5v14M3 12h6M15 12h6M6 9l3 3-3 3M18 9l-3 3 3 3" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="{% block main_class %}wrap{% endblock %}">
+{% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap wrap-wide">
+      <a href="https://github.com/bogomaz-robotic/fantastic-garbanzo">GitHub</a>
+    </div>
+  </footer>
+{% if mermaid %}
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "default"
+    });
+    mermaid.run();
+  </script>
+{% endif %}
+{% block scripts %}{% endblock %}
+</body>
+</html>
