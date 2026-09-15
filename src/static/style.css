@@ -222,11 +222,15 @@ a:visited {
   flex-shrink: 0;
 }
 
-.titlebar-buttons i {
+.titlebar-buttons > * {
   width: 18px;
   height: 16px;
   display: grid;
   place-items: center;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
   background: var(--face);
   color: var(--face-text);
   box-shadow: var(--raised);
@@ -237,9 +241,41 @@ a:visited {
   line-height: 1;
 }
 
-.titlebar-buttons i:nth-child(1)::before { content: "_"; transform: translateY(-3px); }
-.titlebar-buttons i:nth-child(2)::before { content: "\25A1"; }
-.titlebar-buttons i:nth-child(3)::before { content: "\00D7"; font-size: 13px; }
+.titlebar-buttons > :nth-child(1)::before { content: "_"; transform: translateY(-3px); }
+.titlebar-buttons > :nth-child(2)::before { content: "\25A1"; }
+.titlebar-buttons > :nth-child(3)::before { content: "\00D7"; font-size: 13px; }
+
+.titlebar-buttons > a:visited {
+  color: var(--face-text);
+}
+
+.card-minimize,
+.card-open,
+.card-close {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.card-minimize:active,
+.card-open:active,
+.card-close:active {
+  box-shadow: var(--sunken);
+}
+
+.card-open:active::before,
+.card-close:active::before {
+  transform: translate(1px, 1px);
+}
+
+.card-minimize:active::before {
+  transform: translate(1px, -2px);
+}
+
+.card-minimize:focus-visible,
+.card-close:focus-visible {
+  outline: 1px dotted var(--title-text);
+  outline-offset: 1px;
+}
 
 /* Header / footer */
 
@@ -435,6 +471,39 @@ a:visited {
   font-size: 1.1em;
   opacity: 0.7;
   margin-left: 2px;
+}
+
+.card-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding: 3px;
+  box-shadow: var(--sunken);
+}
+
+.card-tray[hidden] {
+  display: none;
+}
+
+.tray-item {
+  font: inherit;
+  font-size: 0.75rem;
+  max-width: 220px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--face-text);
+  background: var(--face);
+  border: none;
+  border-radius: 0;
+  box-shadow: var(--raised);
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.tray-item:active {
+  box-shadow: var(--sunken);
 }
 
 .filter-status {

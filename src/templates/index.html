@@ -28,21 +28,25 @@
 {% endfor %}
   </div>
 {% endif %}
+  <div class="card-tray" role="group" aria-label="Minimized posts" hidden></div>
   <p class="filter-status" aria-live="polite">
     <span class="filter-status-text"></span>
     <button type="button" class="filter-clear" hidden>Clear filters</button>
+    <button type="button" class="filter-clear filter-restore" hidden>Restore closed</button>
   </p>
 </div>
 
 {% if posts %}
 <ul class="card-grid">
 {% for post in posts %}
-  <li class="card" data-category="{{ post.category }}" data-tags="{{ post.tags | map('slugify') | join(' ') }}">
+  <li class="card" data-id="{{ post.url }}" data-category="{{ post.category }}" data-tags="{{ post.tags | map('slugify') | join(' ') }}">
+    <div class="titlebar">
+      <span class="titlebar-text">~/{{ post.rel | join("/") }}</span>
+      <span class="titlebar-buttons">
+        <button type="button" class="card-minimize" aria-label="Minimize “{{ post.title }}”" title="Minimize"></button><a class="card-open" href="{{ root }}{{ post.url }}" tabindex="-1" aria-hidden="true" title="Open"></a><button type="button" class="card-close" aria-label="Close “{{ post.title }}”" title="Close"></button>
+      </span>
+    </div>
     <a class="card-link" href="{{ root }}{{ post.url }}">
-      <div class="titlebar">
-        <span class="titlebar-text">~/{{ post.rel | join("/") }}</span>
-        <span class="titlebar-buttons" aria-hidden="true"><i></i><i></i><i></i></span>
-      </div>
       <div class="card-cover" style="--hue: {{ post.hue }}">
 {% if post.cover_url %}
         <img src="{{ root }}{{ post.cover_url }}" alt="" loading="lazy">
