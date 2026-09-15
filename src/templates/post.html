@@ -4,9 +4,11 @@
 
 {% block content %}
 <article class="post">
-  <div class="titlebar" aria-hidden="true">
-    <span class="titlebar-text">{{ page.title if page else post.title }} - Notepad</span>
-    <span class="titlebar-buttons"><i></i><i></i><i></i></span>
+  <div class="titlebar">
+    <span class="titlebar-text" aria-hidden="true">{{ page.title if page else post.title }} - Notepad</span>
+    <span class="titlebar-buttons">
+      <a href="{{ root }}" aria-label="Minimize, back to all posts" title="Minimize"></a><button type="button" class="width-toggle-alt" aria-pressed="false" aria-label="Full width" title="Full width"></button><a href="{{ root }}" aria-label="Close, back to all posts" title="Close"></a>
+    </span>
   </div>
   <header class="post-header">
     <p class="breadcrumb">

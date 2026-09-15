@@ -249,30 +249,24 @@ a:visited {
   color: var(--face-text);
 }
 
-.card-minimize,
-.card-open,
-.card-close {
+.titlebar-buttons > a,
+.titlebar-buttons > button {
   cursor: pointer;
   text-decoration: none;
 }
 
-.card-minimize:active,
-.card-open:active,
-.card-close:active {
+.titlebar-buttons > a:active,
+.titlebar-buttons > button:active,
+.titlebar-buttons > [aria-pressed="true"] {
   box-shadow: var(--sunken);
 }
 
-.card-open:active::before,
-.card-close:active::before {
-  transform: translate(1px, 1px);
+.titlebar-buttons > :active::before {
+  translate: 1px 1px;
 }
 
-.card-minimize:active::before {
-  transform: translate(1px, -2px);
-}
-
-.card-minimize:focus-visible,
-.card-close:focus-visible {
+.titlebar-buttons > a:focus-visible,
+.titlebar-buttons > button:focus-visible {
   outline: 1px dotted var(--title-text);
   outline-offset: 1px;
 }
