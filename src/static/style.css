@@ -271,6 +271,105 @@ a:visited {
   outline-offset: 1px;
 }
 
+/* Image / diagram viewer */
+
+.zoomable {
+  cursor: zoom-in;
+}
+
+body.zoom-open {
+  overflow: hidden;
+}
+
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  padding: clamp(8px, 3vw, 32px);
+  background: rgb(0 0 0 / 0.6);
+}
+
+.zoom-overlay[hidden] {
+  display: none;
+}
+
+.zoom-window {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  padding: 3px;
+  background: var(--face);
+  color: var(--face-text);
+  box-shadow: var(--raised), 6px 6px 0 rgb(0 0 0 / 0.35);
+}
+
+.zoom-window .titlebar-buttons > [data-zoom="out"]::before { content: "\2212"; font-size: 12px; transform: none; }
+.zoom-window .titlebar-buttons > [data-zoom="in"]::before { content: "+"; font-size: 12px; }
+
+.zoom-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 3px 0;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: var(--sunken);
+  cursor: grab;
+  touch-action: none;
+}
+
+.zoom-stage.dragging {
+  cursor: grabbing;
+}
+
+.zoom-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+
+.zoom-canvas svg,
+.zoom-canvas img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.zoom-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+  font-size: 0.75rem;
+}
+
+.zoom-level {
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  min-width: 4ch;
+  padding: 0 6px;
+  box-shadow: var(--sunken);
+}
+
+.zoom-hint {
+  margin-left: auto;
+  color: var(--face-text);
+  opacity: 0.75;
+}
+
+@media (max-width: 560px) {
+  .zoom-hint {
+    display: none;
+  }
+}
+
 /* Header / footer */
 
 .site-header {

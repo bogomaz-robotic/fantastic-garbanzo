@@ -35,6 +35,8 @@ Deployment: pushing to `main` is meant to run `.github/workflows/deploy.yml` (in
 
 **Theming:** the dark palette in `style.css` exists twice — under `@media (prefers-color-scheme: dark) :root:not([data-theme="light"])` and under `:root[data-theme="dark"]` — so a stored choice overrides the system setting. Keep the two blocks identical, and put theme-dependent values in tokens rather than new media queries. `theme.js` fires a `themechange` event that re-renders Mermaid diagrams.
 
+**Image viewer:** `src/static/zoom.js` (loaded by `post.html` only) opens diagrams and images from `.post-content` in an overlay with wheel/pinch zoom and pointer-drag panning. It clones the clicked node, so Mermaid SVGs work once rendered; targets are matched by selector at click time and re-marked on `load` and `themechange`.
+
 **Styling:** `src/static/style.css` is the only stylesheet. Card placeholders use a `--hue` derived from a CRC32 of the category (`Post.hue`). Raw HTML in posts passes through unchanged; inline SVG figures use the `dg-*` classes defined in `style.css`.
 
 Frontend JS is plain ES5-style IIFEs with no build step or dependencies.

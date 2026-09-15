@@ -63,6 +63,9 @@ URL, e.g. `?category=architecture&tag=caching`.
   pages that contain one load the Mermaid script; all other pages are JS-free.
 - **Raw HTML** (e.g. inline SVG figures using the `dg-*` classes in
   `style.css`) is passed through unchanged.
+- **Viewer:** in a post, images and diagrams (Mermaid, `figure.diagram`,
+  `.post-hero`) open in a zoom/pan viewer when clicked. An image wrapped in a
+  link keeps the link instead.
 
 ## Local development
 

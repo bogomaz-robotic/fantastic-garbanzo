@@ -11,6 +11,8 @@ This post explains how the project reaches each goal from
 For exact interfaces, field names, and versions, see
 [Part 3: Technical Specification](../technical-specification/).
 
+![Arm demo](assets/IMG_1149.png)
+
 ## The full pipeline, in one picture
 
 ```mermaid
