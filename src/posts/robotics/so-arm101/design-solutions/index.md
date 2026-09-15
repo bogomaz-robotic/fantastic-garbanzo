@@ -3,6 +3,7 @@ title: "SO-ARM101, Part 2: How the Pieces Fit Together"
 date: 2026-09-14
 tags: [ros2, robotics, so-arm101, micro-ros, ros2-control]
 summary: The design behind the arm — from WiFi key presses through a safety gate and ros2_control down to six serial servos.
+cover: assets/IMG_1149.png
 ---
 
 This post explains how the project reaches each goal from
